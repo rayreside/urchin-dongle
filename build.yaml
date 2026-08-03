@@ -13,29 +13,29 @@
 #
 ---
 include:
-#  - board: seeeduino_xiao_ble
+#  - board: xiao_ble//zmk
 #    shield: urchin
 #    snippet: studio-rpc-usb-uart
 #    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=y -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_STUDIO_LOCKING=n -DCONFIG_ZMK_DISPLAY=n
 #    artifact-name: xiao_dongle
 
-  - board: seeeduino_xiao_ble
+  - board: xiao_ble//zmk
     shield: urchin dongle_screen
     snippet: studio-rpc-usb-uart
     cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=y -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_STUDIO_LOCKING=n
     artifact-name: xiao_prospector
 
-  - board: seeeduino_xiao_ble
+  - board: xiao_ble//zmk
     shield: settings_reset
-  
-  - board: nice_nano_v2
+
+  - board: nice_nano@2.0.0//zmk
     shield: urchin_left nice_view_adapter nice_view_gem
     cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n -DCONFIG_NICE_VIEW_GEM_ANIMATION=n
     artifact-name: nice_view_left
-  - board: nice_nano_v2
+  - board: nice_nano@2.0.0//zmk
     shield: urchin_right nice_view_adapter nice_view_gem
     cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n -DCONFIG_NICE_VIEW_GEM_ANIMATION=n
     artifact-name: nice_view_right
 
-  - board: nice_nano_v2
+  - board: nice_nano@2.0.0//zmk
     shield: settings_reset
