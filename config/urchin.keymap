@@ -102,7 +102,7 @@
             label = "ext";
             bindings = <
 &kp LC(LA(DEL))    &none            &none    &none     &kp LC(LS(T))    &kp PAGE_UP         &kp HOME      &kp UP          &kp END            &kp DEL
-&none              &kp LG(LS(S))    &none    &none     &none            &kp PAGE_DOWN       &kp LEFT      &kp DOWN        &kp RIGHT          &none
+&none              &kp LG(LS(S))    &none    &trans    &none            &kp PAGE_DOWN       &kp LEFT      &kp DOWN        &kp RIGHT          &none
 &trans             &trans           &none    &none     &none            &kp K_PLAY_PAUSE    &kp C_MUTE    &kp C_VOL_DN    &kp C_VOLUME_UP    &none
                                              &trans    &trans           &trans              &trans
             >;
