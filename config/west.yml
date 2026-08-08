@@ -51,6 +51,6 @@ manifest:
       # the eyes means pushing the fork and bumping this.
       #
       # eyes-widget as of 2026-08-05
-      revision: f2f4e113af702aaf7fad1289dc3bc3c37db25c1a
+      revision: 8e1d764be895a67dd0b1e8863c2535a6405149f0
   self:
     path: config
