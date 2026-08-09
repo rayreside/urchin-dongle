@@ -46,10 +46,20 @@ Configuration files are located in the `config/` directory. Refer to [ZMK Docume
 
 ## Credits
 
-- [duckyb](https://github.com/duckyb)
-- [carrefinho](https://github.com/carrefinho)
-- [M165437](https://github.com/M165437)
+- [duckyb](https://github.com/duckyb) — the Urchin keyboard and the original ZMK config this repo forks
+- [carrefinho](https://github.com/carrefinho) — Prospector, the dongle this display hardware comes from
+- [M165437](https://github.com/M165437) — nice!view gem, on the keyboard halves
+- [janpfischer](https://github.com/janpfischer) — YADS dongle screen module
 
 ## License
 
-See LICENSE file for details.
+MIT — see [LICENSE](LICENSE).
+
+This repo forks [duckyb/urchin-zmk-firmware](https://github.com/duckyb/urchin-zmk-firmware).
+Files under `config/boards/shields/urchin/` derive from it and keep their original copyright
+notices and SPDX headers; the LICENSE covers both that work and ours.
+
+Note that this repo contains configuration only — the modules it builds against are pulled in by
+west and carry their own licences. In particular the dongle screen comes from
+[our YADS fork](https://github.com/rayreside/zmk-dongle-screen), which is MIT except for a bundled
+Fredoka font under the SIL Open Font License 1.1. Nothing OFL-licensed lives in this repository.

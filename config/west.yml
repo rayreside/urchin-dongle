@@ -12,24 +12,45 @@ manifest:
       # nice!view gem
     - name: m165437
       url-base: https://github.com/M165437
-      # prospector
+      # prospector / YADS - upstream, kept for reference
     - name: janpfischer
       url-base: https://github.com/janpfischer
+      # our YADS fork, carrying the eyes widget
+    - name: rayreside
+      url-base: https://github.com/rayreside
+  # Everything we don't control is pinned to a commit rather than a branch.
+  # A branch name means "whatever is at the tip when this builds", which is
+  # how a working config broke without being touched: zmk was on `main` when
+  # main moved to Zephyr 4.1 and renamed every board.
+  #
+  # To take upstream changes, bump the SHA deliberately - and reflash all
+  # three devices together, since dongle and halves have to agree on the
+  # split protocol.
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: main
+      # main as of 2026-08-02
+      revision: f2fa3905c8a1e2e8e033e9d3dbb98b2067e69e1f
       import: app/west.yml
     - name: urchin-zmk-module
       remote: duckyb
-      revision: main
+      # main as of 2024-11-14; upstream has not moved since
+      revision: a3ab64fa7779f82675695f3d7d17f705f840da25
     - name: nice-view-gem
       remote: m165437
-      revision: main
+      # main as of 2026-02-27
+      revision: 0a50fe209d929c916c5664c6affd0f4977c6b012
     - name: zmk-dongle-screen
-      remote: janpfischer
-      # main is LVGL 8 / ZMK 0.3.0 and does not build against ZMK main
-      # (Zephyr 4.1 + LVGL 9). upgrade-4.1 is the branch for it.
-      revision: upgrade-4.1
+      remote: rayreside
+      # Fork of janpfischer/zmk-dongle-screen. Branched from upstream
+      # upgrade-4.1 (LVGL 9 / Zephyr 4.1 - upstream main is still LVGL 8 and
+      # will not build against ZMK main) and adds the eyes widget.
+      #
+      # Pinned now the widget has settled, so every project here resolves to a
+      # commit and this config builds the same firmware indefinitely. Changing
+      # the eyes means pushing the fork and bumping this.
+      #
+      # eyes-widget as of 2026-08-05
+      revision: 398e7a0277db7dfdfbdbba3f113c66794d14e3aa
   self:
     path: config
