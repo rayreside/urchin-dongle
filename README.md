@@ -10,6 +10,15 @@ This firmware enables wireless connectivity for the Urchin keyboard using a Seee
 
 - USB dongle form factor (Seeed XIAO BLE)
 - ZMK Studio support for real-time monitoring and configuration
+- A dongle screen built around a pair of animated eyes rather than a status readout — they report
+  the active layer, and react to idle and typing speed on the base layer
+- Short lines of dialogue on waking, typing and waiting, typed out a character at a time
+- A background layer: sparkles on power-up, and stress lines that build as typing speed climbs
+- Battery for both halves on one row, and only the live connection method shown
+
+The screen comes from [our fork of YADS](https://github.com/rayreside/zmk-dongle-screen); its
+README documents the widgets and how to tune them. This repo decides which are switched on — see
+`config/boards/shields/urchin/urchin.conf`.
 
 ## Hardware Requirements
 
@@ -49,7 +58,10 @@ Configuration files are located in the `config/` directory. Refer to [ZMK Docume
 - [duckyb](https://github.com/duckyb) — the Urchin keyboard and the original ZMK config this repo forks
 - [carrefinho](https://github.com/carrefinho) — Prospector, the dongle this display hardware comes from
 - [M165437](https://github.com/M165437) — nice!view gem, on the keyboard halves
-- [janpfischer](https://github.com/janpfischer) — YADS dongle screen module
+- [janpfischer](https://github.com/janpfischer) — YADS, the dongle screen module our fork is built
+  on: the shield, the display glue, and the widgets we kept
+- [englmaxi](https://github.com/englmaxi) — zmk-dongle-display, which YADS credits as inspiration
+- The Fredoka Project Authors — the screen's font, bundled in the fork under the SIL OFL 1.1
 
 ## License
 
