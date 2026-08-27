@@ -50,7 +50,8 @@ manifest:
       # commit and this config builds the same firmware indefinitely. Changing
       # the eyes means pushing the fork and bumping this.
       #
-      # main as of 2026-08-26
-      revision: 7a08999617c9b4ac62f8c1fadbfc599bd359cfb1
+      # layer-mapping-config as of 2026-08-26 - unmerged, pinned here so CI
+      # builds the branch. Move back to a main commit once it lands.
+      revision: 0fb12b397be711cf7142c25a163c845782ac3d69
   self:
     path: config
