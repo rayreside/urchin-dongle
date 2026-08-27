@@ -50,7 +50,7 @@ manifest:
       # commit and this config builds the same firmware indefinitely. Changing
       # the eyes means pushing the fork and bumping this.
       #
-      # eyes-widget as of 2026-08-05
-      revision: 3ed337fa1f59389cfca3c30b4d60254d72623e00
+      # main as of 2026-08-26
+      revision: 7a08999617c9b4ac62f8c1fadbfc599bd359cfb1
   self:
     path: config
