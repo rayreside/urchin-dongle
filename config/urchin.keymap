@@ -42,6 +42,39 @@
             quick-tap-ms = <200>;
             bindings = <&kp>, <&kp>;
         };
+
+        // Mod-tap for the letters that carry Alt and Gui.
+        //
+        // Plain &mt is hold-preferred: it commits to the modifier the instant
+        // any other key goes down. Mid-word that is always what happens, so
+        // rolling "next", "size" or "exam" fired Gui+T / Alt+E instead of the
+        // letters. That was the whole reason for auditing this keymap.
+        //
+        // require-prior-idle-ms is the fix: if another key went down within
+        // the last 150ms, this one can only be a tap. Letters mid-word always
+        // follow a recent press, so they can no longer become modifiers.
+        // Deliberate chords survive because reaching for Alt+Tab or Gui+D
+        // involves a pause longer than that.
+        //
+        // balanced is the second line of defence - the hold now needs the
+        // other key pressed AND released, not merely pressed. quick-tap-ms
+        // restores holding z or x to repeat the letter, which plain &mt with
+        // no quick-tap could not do.
+        //
+        // Deliberately NOT hold-trigger-key-positions: restricting these to
+        // opposite-hand presses would also kill the misfires, but Tab and D
+        // are both left-hand, so it would take Alt+Tab and Gui+D with them.
+
+        hm: home_mods {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOME_MODS";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <220>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp>, <&kp>;
+        };
     };
 
     macros {
@@ -77,7 +110,7 @@
             bindings = <
 &kp Q             &kp W             &kp E    &kp R            &kp T             &kp Y          &kp U          &kp I        &kp O      &kp P
 &kp A             &kp S             &kp D    &lt 1 F          &kp G             &kp H          &kp J          &kp K        &kp L      &kp BACKSPACE
-&mt LEFT_ALT Z    &mt LEFT_GUI X    &kp C    &kp V            &kp B             &kp N          &kp M          &kp COMMA    &kp DOT    &kp SQT
+&hm LEFT_ALT Z    &hm LEFT_GUI X    &kp C    &kp V            &kp B             &kp N          &kp M          &kp COMMA    &kp DOT    &kp SQT
                                              &mt LCTRL TAB    &kp LEFT_SHIFT    &lt 2 SPACE    &lt 3 ENTER
             >;
         };
@@ -95,28 +128,74 @@
             >;
         };
 
-        // Main modifiers and arrow keys
+        // Arrow keys, media, and OS shortcuts.
+        //
+        // Backspace at the right pinky is &trans rather than &none, so it
+        // falls through from the base layer and stays in the same physical
+        // place whether or not this layer is held. Ctrl is available here too,
+        // so that gives word-delete for free.
+        //
+        // Two screenshot keys, side by side on S and D:
+        //   S = Gui+Shift+S, the Windows snip.
+        //   D = Ctrl+Shift+4. On a Mac with Control and Command swapped in
+        //       Keyboard settings (the way this keymap is meant to be used
+        //       there) that arrives as Cmd+Shift+4, the Mac region capture.
+        // On Windows the D key does nothing in most applications, which is
+        // the intended harmless no-op.
+        //
+        // Zoom out and in sit beside Alt and Gui on the bottom row, ordered
+        // the same way as the volume pair on the other hand. Ctrl+Equal rather
+        // than Ctrl+Plus: both zoom in most browsers, but the unshifted form is
+        // the one every application binds.
+        //
+        // These two are cross-platform for free. Zoom is Ctrl+- on Windows and
+        // Cmd+- on a Mac, and the Control/Command swap maps one onto the other
+        // exactly - unlike Ctrl+Tab, which is why that one is not here.
 
         ext_layer {
             display-name = "ext";
             label = "ext";
             bindings = <
-&kp LC(LA(DEL))    &none            &none    &none     &kp LC(LS(T))    &kp PAGE_UP         &kp HOME      &kp UP          &kp END            &kp DEL
-&none              &kp LG(LS(S))    &none    &trans    &none            &kp PAGE_DOWN       &kp LEFT      &kp DOWN        &kp RIGHT          &none
-&trans             &trans           &none    &none     &none            &kp K_PLAY_PAUSE    &kp C_MUTE    &kp C_VOL_DN    &kp C_VOLUME_UP    &none
-                                             &trans    &trans           &trans              &trans
+&kp LC(LA(DEL))    &none            &none             &none              &kp LC(LS(T))    &kp PAGE_UP         &kp HOME      &kp UP          &kp END            &kp DEL
+&none              &kp LG(LS(S))    &kp LC(LS(N4))    &trans             &none            &kp PAGE_DOWN       &kp LEFT      &kp DOWN        &kp RIGHT          &trans
+&trans             &trans           &kp LC(MINUS)     &kp LC(EQUAL)      &none            &kp K_PLAY_PAUSE    &kp C_MUTE    &kp C_VOL_DN    &kp C_VOLUME_UP    &none
+                                                      &trans             &trans           &trans              &trans
             >;
         };
 
-        // Function keys with modifiers
+        // Function keys, plus copies of the three keys their own modifier
+        // sits on.
+        //
+        // A modifier cannot modify the key it lives on: Ctrl and Tab share one
+        // thumb key, Alt lives on Z and Gui lives on X, so Ctrl+Tab, Alt+Z and
+        // Gui+X cannot be chorded on the base layer. Tab sits where Backspace
+        // is on base, and Z and X are mirrored across to the right hand, so
+        // each chord becomes left-hand modifier plus right thumb plus right
+        // hand copy. Plain copies rather than bound chords, so they stay
+        // OS-neutral - you build the chord yourself and it comes out right on
+        // Windows, Mac and Linux alike.
+        //
+        // The settings layer moved here from the bottom-right pinky to free
+        // that slot for the Z copy.
+        //
+        // It sits on F on purpose. F commits the left index finger, which puts
+        // BT clear and profiles 0, 1 and 2 - all four in the index columns -
+        // out of comfortable reach. That is the intent, not a cost: nothing on
+        // the settings layer belongs in normal typing, and the functions there
+        // are niche enough that the only real risk is triggering one by
+        // accident. Awkward is the feature. Studio unlock stays reachable on
+        // the pinky, which is fine.
+        //
+        // Do not "fix" this by moving it to a finger that leaves the layer
+        // fully reachable. That defeats the point.
 
         fnc_layer {
             display-name = "fnc";
             label = "fnc";
             bindings = <
 &kp F1     &kp F2     &kp F3    &kp F4    &kp F5    &kp F6    &kp F7    &kp F8    &kp F9    &kp F10
-&kp F11    &kp F12    &none     &none     &none     &none     &none     &none     &none     &none
-&trans     &trans     &none     &none     &none     &none     &none     &none     &none     &mo 4
+&kp F11    &kp F12    &none     &mo 4     &none     &none     &none     &none     &none     &kp TAB
+&trans     &trans     &none     &none     &none     &none     &none     &none     &kp X     &kp Z
                                 &trans    &trans    &none     &trans
             >;
         };
@@ -131,7 +210,7 @@
             bindings = <
 &studio_unlock      &none    &none    &bt BT_CLR    &bt BT_SEL 0    &bt BT_SEL 3    &none     &unstick    &none    &bootloader
 &none               &none    &none    &none         &bt BT_SEL 1    &bt BT_SEL 4    &none     &none       &none    &none
-&none               &none    &none    &none         &bt BT_SEL 2    &bt BT_SEL 5    &none     &none       &none    &trans
+&none               &none    &none    &none         &bt BT_SEL 2    &none           &none     &none       &none    &trans
                                  &none         &none           &none           &trans
             >;
         };
