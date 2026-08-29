@@ -75,6 +75,46 @@
             require-prior-idle-ms = <150>;
             bindings = <&kp>, <&kp>;
         };
+
+        // Layer-tap for F, which opens the number and symbol layer.
+        //
+        // Stock &lt is tap-preferred at 200ms, and 200ms is longer than the
+        // fingers want: reaching for a digit produced "fm" instead of "1"
+        // because the second key landed before the clock ran out, so F
+        // resolved as a letter. The opposite error - a number appearing inside
+        // a word - effectively never happened, so the budget was all on one
+        // side. Shortening the term moves it back.
+        //
+        // Deliberately NOT a copy of hm above, despite the family resemblance.
+        //
+        // No require-prior-idle-ms. On hm that property is right, because Z and
+        // X are pressed mid-word constantly and their tap is what needs
+        // protecting. Here it would be exactly wrong: the moment you reach for
+        // a digit is right after typing letters, which is precisely when it
+        // would force a tap and hand back a literal f.
+        //
+        // Still tap-preferred, not balanced. Balanced would fire the layer as
+        // soon as another key is pressed and released, removing the wait
+        // entirely - but f is a common letter, and whether "for" or "from"
+        // misfires would then depend on release order. A consistent short wait
+        // beats an intermittent wrong character.
+        //
+        // 150 is a starting point, not a settled number. Both failure
+        // directions are immediately visible: "fm" means go lower, digits
+        // inside words mean go back up.
+        //
+        // Only F uses this. The thumb layer-taps stay on stock &lt, since
+        // nothing is wrong with them.
+
+        lt_sym: layer_tap_sym {
+            compatible = "zmk,behavior-hold-tap";
+            label = "LAYER_TAP_SYM";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <150>;
+            quick-tap-ms = <175>;
+            bindings = <&mo>, <&kp>;
+        };
     };
 
     macros {
@@ -109,7 +149,7 @@
             label = "beep";
             bindings = <
 &kp Q             &kp W             &kp E    &kp R            &kp T             &kp Y          &kp U          &kp I        &kp O      &kp P
-&kp A             &kp S             &kp D    &lt 1 F          &kp G             &kp H          &kp J          &kp K        &kp L      &kp BACKSPACE
+&kp A             &kp S             &kp D    &lt_sym 1 F      &kp G             &kp H          &kp J          &kp K        &kp L      &kp BACKSPACE
 &hm LEFT_ALT Z    &hm LEFT_GUI X    &kp C    &kp V            &kp B             &kp N          &kp M          &kp COMMA    &kp DOT    &kp SQT
                                              &mt LCTRL TAB    &kp LEFT_SHIFT    &lt 2 SPACE    &lt 3 ENTER
             >;
